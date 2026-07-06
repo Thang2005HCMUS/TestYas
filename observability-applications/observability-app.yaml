@@ -8,17 +8,24 @@ spec:
   project: default
   sources:
     - chart: kube-prometheus-stack
-      repoURL: https://prometheus-community.github.io/helm-charts #[cite: 4]
+      repoURL: https://prometheus-community.github.io/helm-charts
       targetRevision: HEAD
       helm:
         valueFiles:
           - $values/observability/prometheus.values.yaml
-    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
+        parameters:
+          - name: hostname
+            value: "grafana.YOUR_DOMAIN" 
+          - name: grafana.grafana\.ini.database.user
+            value: "YOUR_DB_USER"
+          - name: grafana.grafana\.ini.database.password
+            value: "YOUR_DB_PASSWORD"
+    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability #[cite: 4]
+    namespace: observability
   syncPolicy:
     automated:
       prune: true
@@ -37,17 +44,17 @@ spec:
   project: default
   sources:
     - chart: loki
-      repoURL: https://grafana.github.io/helm-charts #[cite: 4]
+      repoURL: https://grafana.github.io/helm-charts
       targetRevision: HEAD
       helm:
         valueFiles:
           - $values/observability/loki.values.yaml
-    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
+    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability #[cite: 4]
+    namespace: observability
   syncPolicy:
     automated:
       prune: true
@@ -66,17 +73,17 @@ spec:
   project: default
   sources:
     - chart: tempo
-      repoURL: https://grafana.github.io/helm-charts #[cite: 4]
+      repoURL: https://grafana.github.io/helm-charts
       targetRevision: HEAD
       helm:
         valueFiles:
           - $values/observability/tempo.values.yaml
-    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
+    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability #[cite: 4]
+    namespace: observability
   syncPolicy:
     automated:
       prune: true
@@ -95,17 +102,17 @@ spec:
   project: default
   sources:
     - chart: promtail
-      repoURL: https://grafana.github.io/helm-charts #[cite: 4]
+      repoURL: https://grafana.github.io/helm-charts
       targetRevision: HEAD
       helm:
         valueFiles:
           - $values/observability/promtail.values.yaml
-    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
+    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability #[cite: 4]
+    namespace: observability
   syncPolicy:
     automated:
       prune: true
@@ -123,15 +130,15 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
-    path: observability/opentelemetry #[cite: 4]
+    repoURL: https://github.com/Thang2005HCMUS/TestYas.git
+    path: observability/opentelemetry
     targetRevision: main
     helm:
       valueFiles:
-        - values.yaml #[cite: 1]
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability #[cite: 4]
+    namespace: observability
   syncPolicy:
     automated:
       prune: true
@@ -149,15 +156,26 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
-    path: observability/grafana #[cite: 4]
+    repoURL: https://github.com/Thang2005HCMUS/TestYas.git
+    path: observability/grafana
     targetRevision: main
     helm:
       valueFiles:
-        - values.yaml #[cite: 1]
+        - values.yaml
+      parameters:
+        - name: hostname
+          value: "grafana.YOUR_DOMAIN"
+        - name: grafana.username
+          value: "YOUR_GRAFANA_USERNAME"
+        - name: grafana.password
+          value: "YOUR_GRAFANA_PASSWORD"
+        - name: postgresql.username
+          value: "YOUR_DB_USERNAME"
+        - name: postgresql.password
+          value: "YOUR_DB_PASSWORD"
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability #[cite: 4]
+    namespace: observability
   syncPolicy:
     automated:
       prune: true
