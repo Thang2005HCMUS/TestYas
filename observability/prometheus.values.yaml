@@ -18,3 +18,13 @@ grafana:
     enabled: true
     hosts:
       - *hostname
+kubeEtcd:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
+kubeDNS:
+  enabled: false
