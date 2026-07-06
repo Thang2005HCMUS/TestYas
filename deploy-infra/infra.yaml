@@ -224,7 +224,7 @@ spec:
   sources:
     - repoURL: https://akhq.io/
       chart: akhq
-      targetRevision: HEAD
+      targetRevision: 0.27.0
       helm:
         valueFiles:
           - $values/k8s/deploy/cluster-config-gitOps.yaml

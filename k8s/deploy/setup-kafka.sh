@@ -3,7 +3,8 @@ set -x
 
 # Add chart repos and update
 
-
+helm repo add akhq https://akhq.io/
+helm repo add strimzi https://strimzi.io/charts/
 #Read configuration value from cluster-config.yaml file
 read -rd '' DOMAIN POSTGRESQL_REPLICAS POSTGRESQL_USERNAME POSTGRESQL_PASSWORD \
 KAFKA_REPLICAS ZOOKEEPER_REPLICAS ELASTICSEARCH_REPLICAES \
