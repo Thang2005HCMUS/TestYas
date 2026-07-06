@@ -5,6 +5,8 @@ kind: Application
 metadata:
   name: postgres
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -34,6 +36,8 @@ kind: Application
 metadata:
   name: redis
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -65,6 +69,9 @@ kind: Application
 metadata:
   name: kafka-cluster
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -94,6 +101,8 @@ kind: Application
 metadata:
   name: zookeeper
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -150,6 +159,8 @@ kind: Application
 metadata:
   name: keycloak
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
