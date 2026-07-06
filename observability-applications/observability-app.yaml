@@ -9,19 +9,13 @@ spec:
   sources:
     - chart: kube-prometheus-stack
       repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: "*" # Sửa HEAD thành "*" cho Helm chart
+      targetRevision: "*"
       helm:
         valueFiles:
           - $values/observability/prometheus.values.yaml
-        parameters:
-          - name: hostname
-            value: "grafana.YOUR_DOMAIN" 
-          - name: grafana.grafana\.ini.database.user
-            value: "YOUR_DB_USER"
-          - name: grafana.grafana\.ini.database.password
-            value: "YOUR_DB_PASSWORD"
+          - $values/observability/cluster-config.yaml # Nạp thẳng file config từ Git vào đây
     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
-      targetRevision: main # Git repo thì giữ nguyên nhánh (main/master/HEAD)
+      targetRevision: main
       ref: values
   destination:
     server: https://kubernetes.default.svc
@@ -45,10 +39,14 @@ spec:
   sources:
     - chart: loki
       repoURL: https://grafana.github.io/helm-charts
-      targetRevision: "*" # Sửa HEAD thành "*" cho Helm chart
+      targetRevision: "*"
       helm:
         valueFiles:
           - $values/observability/loki.values.yaml
+          - $values/observability/cluster-config.yaml
+        parameters:
+          - name: loki.useTestSchema
+            value: "true"
     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
@@ -74,10 +72,11 @@ spec:
   sources:
     - chart: tempo
       repoURL: https://grafana.github.io/helm-charts
-      targetRevision: "*" # Sửa HEAD thành "*" cho Helm chart
+      targetRevision: "*"
       helm:
         valueFiles:
           - $values/observability/tempo.values.yaml
+          - $values/observability/cluster-config.yaml
     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
@@ -103,10 +102,11 @@ spec:
   sources:
     - chart: promtail
       repoURL: https://grafana.github.io/helm-charts
-      targetRevision: "*" # Sửa HEAD thành "*" cho Helm chart
+      targetRevision: "*"
       helm:
         valueFiles:
           - $values/observability/promtail.values.yaml
+          - $values/observability/cluster-config.yaml
     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
@@ -121,7 +121,7 @@ spec:
       - CreateNamespace=true
 
 ---
-# 5. OpenTelemetry Collector (Local Chart trên Git)
+# 5. OpenTelemetry Collector
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -132,10 +132,11 @@ spec:
   source:
     repoURL: https://github.com/Thang2005HCMUS/TestYas.git
     path: observability/opentelemetry
-    targetRevision: main # Git repo nên dùng branch main là đúng
+    targetRevision: main
     helm:
       valueFiles:
         - values.yaml
+        - ../../cluster-config.yaml # Đường dẫn tương đối trỏ về thư mục gốc chứa cluster-config
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
@@ -147,7 +148,7 @@ spec:
       - CreateNamespace=true
 
 ---
-# 6. Grafana Custom Configs (Local Chart trên Git)
+# 6. Grafana Custom Configs
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -162,17 +163,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-      parameters:
-        - name: hostname
-          value: "grafana.YOUR_DOMAIN"
-        - name: grafana.username
-          value: "YOUR_GRAFANA_USERNAME"
-        - name: grafana.password
-          value: "YOUR_GRAFANA_PASSWORD"
-        - name: postgresql.username
-          value: "YOUR_DB_USERNAME"
-        - name: postgresql.password
-          value: "YOUR_DB_PASSWORD"
+        - ../../cluster-config.yaml # Nạp file config
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
