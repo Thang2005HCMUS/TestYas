@@ -13,10 +13,16 @@ spec:
       helm:
         valueFiles:
           - $values/observability/prometheus.values.yaml
-          - $values/observability/cluster-config.yaml # Nạp thẳng file config từ Git vào đây
+          - $values/observability/cluster-config.yaml
         parameters:
-          - name: grafana.assertNoLeakedSecrets
-            value: "false"
+          - name: nameOverride
+            value: "prometheus"
+          - name: fullnameOverride
+            value: "prometheus"
+          - name: grafana.nameOverride
+            value: "grafana"
+          - name: grafana.fullnameOverride
+            value: "grafana"
     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
@@ -47,10 +53,13 @@ spec:
       helm:
         valueFiles:
           - $values/observability/loki.values.yaml
-          - $values/observability/cluster-config.yaml
         parameters:
           - name: loki.useTestSchema
             value: "true"
+          - name: nameOverride
+            value: "loki"
+          - name: fullnameOverride
+            value: "loki"
     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
@@ -63,6 +72,7 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
 
 ---
 # 3. Tempo
@@ -80,7 +90,11 @@ spec:
       helm:
         valueFiles:
           - $values/observability/tempo.values.yaml
-          - $values/observability/cluster-config.yaml
+        parameters:
+          - name: nameOverride
+            value: "tempo"
+          - name: fullnameOverride
+            value: "tempo"
     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
@@ -93,6 +107,7 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
 
 ---
 # 4. Promtail
@@ -110,7 +125,11 @@ spec:
       helm:
         valueFiles:
           - $values/observability/promtail.values.yaml
-          - $values/observability/cluster-config.yaml
+        parameters:
+          - name: nameOverride
+            value: "promtail"
+          - name: fullnameOverride
+            value: "promtail"
     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
@@ -123,8 +142,7 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-
----
+      - ServerSideApply=true
 # 5. OpenTelemetry Collector
 apiVersion: argoproj.io/v1alpha1
 kind: Application
