@@ -15,6 +15,7 @@ spec:
     targetRevision: main
     helm:
       valueFiles:
+        - ./values.yaml
         - ../../cluster-config-gitOps.yaml # Lùi 2 cấp thư mục về k8s/deploy
   destination:
     server: https://kubernetes.default.svc
@@ -74,6 +75,7 @@ spec:
     targetRevision: main
     helm:
       valueFiles:
+        - ./values.yaml
         - ../../cluster-config-gitOps.yaml
   destination:
     server: https://kubernetes.default.svc
