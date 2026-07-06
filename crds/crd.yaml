@@ -4,6 +4,8 @@ kind: Application
 metadata:
   name: opentelemetry-operator
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -33,6 +35,8 @@ kind: Application
 metadata:
   name: grafana-operator
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -57,6 +61,8 @@ kind: Application
 metadata:
   name: postgres-operator
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -81,6 +87,8 @@ kind: Application
 metadata:
   name: strimzi-kafka-operator
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -105,6 +113,8 @@ kind: Application
 metadata:
   name: elastic-operator
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -129,6 +139,8 @@ kind: Application
 metadata:
   name: cert-manager
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -155,3 +167,28 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+--- 
+# Keycloak CRDs & Resources Operator
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak-crds
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/keycloak/keycloak-k8s-resources.git
+    targetRevision: 26.0.2 
+    path: kubernetes
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: keycloak
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true # Nên bật khi cài đặt CRD để tránh lỗi metadata quá dài
