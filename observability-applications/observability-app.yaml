@@ -1,35 +1,35 @@
-# 1. Prometheus Stack
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: prometheus-yas
-  namespace: argocd
-spec:
-  project: default
-  sources:
-    - chart: kube-prometheus-stack
-      repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: "*"
-      helm:
-        valueFiles:
-          - $values/observability/prometheus.values.yaml
-          - $values/observability/cluster-config.yaml # Nạp thẳng file config từ Git vào đây
-        parameters:
-          - name: grafana.assertNoLeakedSecrets
-            value: "false"
-    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
-      targetRevision: main
-      ref: values
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: observability
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+# # 1. Prometheus Stack
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: prometheus-yas
+#   namespace: argocd
+# spec:
+#   project: default
+#   sources:
+#     - chart: kube-prometheus-stack
+#       repoURL: https://prometheus-community.github.io/helm-charts
+#       targetRevision: "*"
+#       helm:
+#         valueFiles:
+#           - $values/observability/prometheus.values.yaml
+#           - $values/observability/cluster-config.yaml # Nạp thẳng file config từ Git vào đây
+#         parameters:
+#           - name: grafana.assertNoLeakedSecrets
+#             value: "false"
+#     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
+#       targetRevision: main
+#       ref: values
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: observability
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - ServerSideApply=true
 
 ---
 # 2. Loki
