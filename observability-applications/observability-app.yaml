@@ -166,7 +166,8 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - cluster-config.yaml # Nạp file config
+        - ../cluster-config.yaml # Nạp file config
+  
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
