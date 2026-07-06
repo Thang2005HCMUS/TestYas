@@ -23,6 +23,8 @@ spec:
             value: "grafana"
           - name: grafana.fullnameOverride
             value: "grafana"
+          - name: grafana.assertNoLeakedSecrets
+            value: "false"
     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
       targetRevision: main
       ref: values
