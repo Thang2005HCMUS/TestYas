@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus-stack
+  name: prometheus-yas
   namespace: argocd
 spec:
   project: default
@@ -31,7 +31,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: loki
+  name: loki-yas
   namespace: argocd
 spec:
   project: default
@@ -60,7 +60,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: tempo
+  name: tempo-yas
   namespace: argocd
 spec:
   project: default
@@ -89,7 +89,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: promtail
+  name: promtail-yas
   namespace: argocd
 spec:
   project: default
@@ -118,7 +118,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: opentelemetry-collector
+  name: opentelemetry-collector-yas
   namespace: argocd
 spec:
   project: default
@@ -144,7 +144,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: grafana-custom-configs
+  name: grafana-custom-configs-yas
   namespace: argocd
 spec:
   project: default
