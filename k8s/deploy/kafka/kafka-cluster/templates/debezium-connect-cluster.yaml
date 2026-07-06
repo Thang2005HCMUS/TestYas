@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: debezium-connect-cluster
   namespace: kafka
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
   labels:
     app: debezium-connect
 spec:
