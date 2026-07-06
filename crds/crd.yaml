@@ -9,10 +9,15 @@ spec:
   source:
     chart: opentelemetry-operator
     repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts 
-    targetRevision: 0.66.0 # Nên fix cứng version thay vì dùng HEAD cho Operator
+    targetRevision: 0.66.0 # Phiên bản cụ thể của bạn
+    helm:
+      values: |
+        manager:
+          collectorImage:
+            repository: "ghcr.io/open-telemetry/opentelemetry-collector/opentelemetry-collector"
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability #
+    namespace: observability 
   syncPolicy:
     automated:
       prune: true
