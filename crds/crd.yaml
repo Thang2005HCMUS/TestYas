@@ -50,3 +50,108 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+---
+# 3. Postgres Operator
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: postgres-operator
+    repoURL: https://opensource.zalando.com/postgres-operator/charts/postgres-operator
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: postgres
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+
+---
+# 4. Strimzi Kafka Operator
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: strimzi-kafka-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: strimzi-kafka-operator
+    repoURL: https://strimzi.io/charts/
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kafka
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+
+---
+# 5. Elastic (ECK) Operator
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: elastic-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: eck-operator
+    repoURL: https://helm.elastic.co
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: elasticsearch
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+
+---
+# 6. Cert Manager
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: cert-manager
+    repoURL: https://charts.jetstack.io
+    targetRevision: v1.12.0
+    helm:
+      values: |
+        installCRDs: true
+        prometheus:
+          enabled: false
+        webhook:
+          timeoutSeconds: 4
+        admissionWebhooks:
+          certManager:
+            create: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

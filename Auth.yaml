@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: default
+  namespace: argocd
+spec:
+  # Thêm các namespace này vào danh sách destination được phép
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: "observability"
+    - server: https://kubernetes.default.svc
+      namespace: "kube-system"
+    - server: https://kubernetes.default.svc
+      namespace: "argocd" # Thêm namespace này để project có thể quản lý các app trong đó
+    - server: https://kubernetes.default.svc
+      namespace: "*" # Hoặc dùng '*' để cho phép tất cả (không khuyến khích cho môi trường production)
+  sourceRepos:
+    - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argocd-manager-kube-system
+rules:
+  - apiGroups: ["*"]
+    resources: ["services", "configmaps", "secrets"] # Các tài nguyên Prometheus cần tạo
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argocd-manager-kube-system-binding
+subjects:
+  - kind: ServiceAccount
+    name: argocd-application-controller
+    namespace: argocd
+roleRef:
+  kind: ClusterRole
+  name: argocd-manager-kube-system
+  apiGroup: rbac.authorization.k8s.io
