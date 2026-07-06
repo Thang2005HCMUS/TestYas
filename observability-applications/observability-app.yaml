@@ -13,7 +13,7 @@ spec:
       helm:
         valueFiles:
           - $values/observability/prometheus.values.yaml
-    - repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
       targetRevision: main
       ref: values
   destination:
@@ -42,7 +42,7 @@ spec:
       helm:
         valueFiles:
           - $values/observability/loki.values.yaml
-    - repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
       targetRevision: main
       ref: values
   destination:
@@ -71,7 +71,7 @@ spec:
       helm:
         valueFiles:
           - $values/observability/tempo.values.yaml
-    - repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
       targetRevision: main
       ref: values
   destination:
@@ -100,7 +100,7 @@ spec:
       helm:
         valueFiles:
           - $values/observability/promtail.values.yaml
-    - repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+    - repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
       targetRevision: main
       ref: values
   destination:
@@ -123,7 +123,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+    repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
     path: observability/opentelemetry #[cite: 4]
     targetRevision: main
     helm:
@@ -149,7 +149,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+    repoURL: https://github.com/Thang2005HCMUS/TestYas.git # THAY BẰNG GIT CỦA BẠN
     path: observability/grafana #[cite: 4]
     targetRevision: main
     helm:
