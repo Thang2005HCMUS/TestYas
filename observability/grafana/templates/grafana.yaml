@@ -1,0 +1,22 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  labels:
+    dashboards: "grafana"
+  namespace: observability
+spec:
+  # Cấu hình tham chiếu Secret
+  adminUser:
+      name: grafana-admin-credentials
+      key: GF_SECURITY_ADMIN_USER
+  adminPassword:
+      name: grafana-admin-credentials
+      key: GF_SECURITY_ADMIN_PASSWORD
+    
+  # Cấu hình Service để đảm bảo nó được tạo ra
+  service:
+    name: grafana-service
+    port: 3000
+    targetPort: 3000
+    type: ClusterIP

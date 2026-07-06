@@ -1,0 +1,166 @@
+# 1. Prometheus Stack
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-stack
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - chart: kube-prometheus-stack
+      repoURL: https://prometheus-community.github.io/helm-charts #[cite: 4]
+      targetRevision: HEAD
+      helm:
+        valueFiles:
+          - $values/observability/prometheus.values.yaml
+    - repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability #[cite: 4]
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+---
+# 2. Loki
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - chart: loki
+      repoURL: https://grafana.github.io/helm-charts #[cite: 4]
+      targetRevision: HEAD
+      helm:
+        valueFiles:
+          - $values/observability/loki.values.yaml
+    - repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability #[cite: 4]
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+---
+# 3. Tempo
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tempo
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - chart: tempo
+      repoURL: https://grafana.github.io/helm-charts #[cite: 4]
+      targetRevision: HEAD
+      helm:
+        valueFiles:
+          - $values/observability/tempo.values.yaml
+    - repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability #[cite: 4]
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+---
+# 4. Promtail
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: promtail
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - chart: promtail
+      repoURL: https://grafana.github.io/helm-charts #[cite: 4]
+      targetRevision: HEAD
+      helm:
+        valueFiles:
+          - $values/observability/promtail.values.yaml
+    - repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability #[cite: 4]
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+---
+# 5. OpenTelemetry Collector (Local Chart trên Git)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opentelemetry-collector
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+    path: observability/opentelemetry #[cite: 4]
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml #[cite: 1]
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability #[cite: 4]
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+---
+# 6. Grafana Custom Configs (Local Chart trên Git)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-custom-configs
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/your-org/your-repo.git # THAY BẰNG GIT CỦA BẠN
+    path: observability/grafana #[cite: 4]
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml #[cite: 1]
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability #[cite: 4]
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

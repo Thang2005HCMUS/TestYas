@@ -1,0 +1,47 @@
+# 1. OpenTelemetry Operator (Dùng Helm Chart)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opentelemetry-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: opentelemetry-operator
+    repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts 
+    targetRevision: 0.66.0 # Nên fix cứng version thay vì dùng HEAD cho Operator
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability #
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true # Bắt buộc thêm dòng này để ArgoCD apply các CRD lớn mà không bị lỗi "metadata annotation too long"
+
+---
+# 2. Grafana Operator (Dùng Helm Chart từ OCI Registry)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana-operator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: grafana-operator
+    # Thay vì "oci://...", với ArgoCD bạn cấu hình repoURL trỏ thẳng vào registry[cite: 4]
+    repoURL: ghcr.io/grafana-operator/helm-charts 
+    targetRevision: v5.0.2 #[cite: 4]
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability #[cite: 4]
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
