@@ -136,7 +136,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - ../../cluster-config.yaml # Đường dẫn tương đối trỏ về thư mục gốc chứa cluster-config
+        - cluster-config.yaml # Đường dẫn tương đối trỏ về thư mục gốc chứa cluster-config
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
@@ -163,7 +163,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-        - ../../cluster-config.yaml # Nạp file config
+        - cluster-config.yaml # Nạp file config
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
