@@ -9,7 +9,7 @@ spec:
   sources:
     - chart: kube-prometheus-stack
       repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: HEAD
+      targetRevision: "*" # Sửa HEAD thành "*" cho Helm chart
       helm:
         valueFiles:
           - $values/observability/prometheus.values.yaml
@@ -21,7 +21,7 @@ spec:
           - name: grafana.grafana\.ini.database.password
             value: "YOUR_DB_PASSWORD"
     - repoURL: https://github.com/Thang2005HCMUS/TestYas.git
-      targetRevision: main
+      targetRevision: main # Git repo thì giữ nguyên nhánh (main/master/HEAD)
       ref: values
   destination:
     server: https://kubernetes.default.svc
@@ -45,7 +45,7 @@ spec:
   sources:
     - chart: loki
       repoURL: https://grafana.github.io/helm-charts
-      targetRevision: HEAD
+      targetRevision: "*" # Sửa HEAD thành "*" cho Helm chart
       helm:
         valueFiles:
           - $values/observability/loki.values.yaml
@@ -74,7 +74,7 @@ spec:
   sources:
     - chart: tempo
       repoURL: https://grafana.github.io/helm-charts
-      targetRevision: HEAD
+      targetRevision: "*" # Sửa HEAD thành "*" cho Helm chart
       helm:
         valueFiles:
           - $values/observability/tempo.values.yaml
@@ -103,7 +103,7 @@ spec:
   sources:
     - chart: promtail
       repoURL: https://grafana.github.io/helm-charts
-      targetRevision: HEAD
+      targetRevision: "*" # Sửa HEAD thành "*" cho Helm chart
       helm:
         valueFiles:
           - $values/observability/promtail.values.yaml
@@ -132,7 +132,7 @@ spec:
   source:
     repoURL: https://github.com/Thang2005HCMUS/TestYas.git
     path: observability/opentelemetry
-    targetRevision: main
+    targetRevision: main # Git repo nên dùng branch main là đúng
     helm:
       valueFiles:
         - values.yaml
