@@ -9,7 +9,7 @@ spec:
   source:
     chart: opentelemetry-operator
     repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts 
-    targetRevision: 0.66.0 # Nên fix cứng version thay vì dùng HEAD cho Operator
+    targetRevision: HEAD # Nên fix cứng version thay vì dùng HEAD cho Operator
   destination:
     server: https://kubernetes.default.svc
     namespace: observability #
