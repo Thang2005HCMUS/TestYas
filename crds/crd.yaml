@@ -62,7 +62,7 @@ spec:
   source:
     chart: postgres-operator
     repoURL: https://opensource.zalando.com/postgres-operator/charts/postgres-operator
-    targetRevision: HEAD
+    targetRevision: "*"
   destination:
     server: https://kubernetes.default.svc
     namespace: postgres
@@ -86,7 +86,7 @@ spec:
   source:
     chart: strimzi-kafka-operator
     repoURL: https://strimzi.io/charts/
-    targetRevision: HEAD
+    targetRevision: "*"
   destination:
     server: https://kubernetes.default.svc
     namespace: kafka
@@ -110,7 +110,7 @@ spec:
   source:
     chart: eck-operator
     repoURL: https://helm.elastic.co
-    targetRevision: HEAD
+    targetRevision: "*"
   destination:
     server: https://kubernetes.default.svc
     namespace: elasticsearch
