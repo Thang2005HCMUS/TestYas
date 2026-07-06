@@ -23,6 +23,28 @@ spec:
 
 
 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: yas-cd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  namespace: argocd
+spec:
+  destination:
+    namespace: crds-yas
+    server: https://kubernetes.default.svc
+  source:
+    path: deploy-infra
+    repoURL: https://github.com/Thang2005HCMUS/TestYas.git
+    targetRevision: main
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      enabled: true
 
 
 
