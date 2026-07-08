@@ -1,32 +1,33 @@
-apiVersion: kafka.strimzi.io/v1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
   name: debezium-connect-cluster
-  namespace: kafka
   annotations:
     strimzi.io/use-connector-resources: "true"
-    argocd.argoproj.io/sync-wave: "1"
 spec:
-  image: quay.io/strimzi/kafka:1.0.0-kafka-4.1.0 # Dùng image base của Strimzi
   replicas: 1
-  bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-  # Strimzi sẽ tự động build image chứa plugin Debezium
+  bootstrapServers: kafka-cluster-kafka-bootstrap:9092
+  image: {{ .Values.debeziumConnect.image }}
+  config:
+    config.providers: secrets
+    config.providers.secrets.class: io.strimzi.kafka.KubernetesSecretConfigProvider
+    group.id: connect-cluster
+    offset.storage.topic: kafka_connect_offsets
+    config.storage.topic: kafka_connect_configs
+    status.storage.topic: kafka_connect_status
+    # -1 means it will use the default replication factor configured in the broker
+    config.storage.replication.factor: -1
+    offset.storage.replication.factor: -1
+    status.storage.replication.factor: -1
+  {{- if eq .Values.debeziumConnect.buildImage true }}
   build:
     output:
-      type: inline # Dùng 'inline' để Strimzi tự build trong cluster (yêu cầu Cluster Operator có quyền push image)
+      type: docker
+      image: {{ .Values.debeziumConnect.image }}
+      pushSecret: docker-registry.secret
     plugins:
-      - name: debezium-postgres-connector
+      - name: debezium-postgresql-connector
         artifacts:
           - type: tgz
-            url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.5.4.Final/debezium-connector-postgres-2.5.4.Final-plugin.tar.gz
-  # Các tham số bắt buộc dưới spec
-  groupId: debezium-connect-cluster
-  configStorageTopic: debezium-connect-cluster-configs
-  offsetStorageTopic: debezium-connect-cluster-offsets
-  statusStorageTopic: debezium-connect-cluster-status
-  config:
-    key.converter: org.apache.kafka.connect.json.JsonConverter
-    value.converter: org.apache.kafka.connect.json.JsonConverter
-    config.storage.replication.factor: 1
-    offset.storage.replication.factor: 1
-    status.storage.replication.factor: 1
+            url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.3.0.Final/debezium-connector-postgres-2.3.0.Final-plugin.tar.gz
+  {{- end }}
