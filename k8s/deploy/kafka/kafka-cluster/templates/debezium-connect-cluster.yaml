@@ -7,15 +7,17 @@ metadata:
 spec:
   replicas: 1
   bootstrapServers: kafka-cluster-kafka-bootstrap:9092
+  # ĐƯA CÁC THÔNG SỐ NÀY RA NGOÀI spec
+  groupId: connect-cluster
+  offsetStorageTopic: kafka_connect_offsets
+  configStorageTopic: kafka_connect_configs
+  statusStorageTopic: kafka_connect_status
+  
   image: {{ .Values.debeziumConnect.image }}
   config:
+    # Các config khác không bắt buộc nằm ở spec thì giữ ở đây
     config.providers: secrets
     config.providers.secrets.class: io.strimzi.kafka.KubernetesSecretConfigProvider
-    group.id: connect-cluster
-    offset.storage.topic: kafka_connect_offsets
-    config.storage.topic: kafka_connect_configs
-    status.storage.topic: kafka_connect_status
-    # -1 means it will use the default replication factor configured in the broker
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
