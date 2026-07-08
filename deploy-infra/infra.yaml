@@ -64,35 +64,35 @@ spec:
 
 ---
 # 3. Kafka & Zookeeper Cluster (Local Chart)
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kafka-cluster
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: kafka-cluster
+#   namespace: argocd
+#   annotations:
+#     argocd.argoproj.io/sync-wave: "2"
 
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/Thang2005HCMUS/TestYas.git
-    path: k8s/deploy/kafka/kafka-cluster
-    targetRevision: main
-    helm:
-      valueFiles:
-        - ./values.yaml
-        - ../../cluster-config-gitOps.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: kafka
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/Thang2005HCMUS/TestYas.git
+#     path: k8s/deploy/kafka/kafka-cluster
+#     targetRevision: main
+#     helm:
+#       valueFiles:
+#         - ./values.yaml
+#         - ../../cluster-config-gitOps.yaml
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: kafka
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
 
 ---
 # 4. Zookeeper Standalone (Local Chart)
