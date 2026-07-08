@@ -7,25 +7,28 @@ metadata:
 spec:
   replicas: 1
   bootstrapServers: kafka-cluster-kafka-bootstrap:9092
-  # ĐƯA CÁC THÔNG SỐ NÀY RA NGOÀI spec
+  
   groupId: connect-cluster
   offsetStorageTopic: kafka_connect_offsets
   configStorageTopic: kafka_connect_configs
   statusStorageTopic: kafka_connect_status
   
-  image: {{ .Values.debeziumConnect.image }}
+  # QUAN TRỌNG: Dùng image chuẩn của Strimzi làm base để có đủ script chạy
+  image: quay.io/strimzi/kafka:latest-kafka-4.1.0
+  
   config:
-    # Các config khác không bắt buộc nằm ở spec thì giữ ở đây
     config.providers: secrets
     config.providers.secrets.class: io.strimzi.kafka.KubernetesSecretConfigProvider
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
+    
   {{- if eq .Values.debeziumConnect.buildImage true }}
   build:
     output:
       type: docker
-      image: {{ .Values.debeziumConnect.image }}
+      # Đây là tên image kết quả sau khi build, KHÔNG ĐƯỢC TRÙNG VỚI spec.image ở trên
+      image: my-custom-debezium:latest
       pushSecret: docker-registry.secret
     plugins:
       - name: debezium-postgresql-connector
