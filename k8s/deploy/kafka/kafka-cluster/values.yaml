@@ -8,7 +8,7 @@ postgresql:
   password: admin
 debeziumConnect:
   image: docker.io/23122051/my-custom-debezium:latest
-  buildImage: true #Enabled when build debezium-connect-postgresql image
+  buildImage: false #Enabled when build debezium-connect-postgresql image
 
 
 
