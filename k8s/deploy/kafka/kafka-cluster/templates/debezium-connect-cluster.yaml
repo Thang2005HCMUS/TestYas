@@ -1,4 +1,4 @@
-apiVersion: kafka.strimzi.io/v1
+apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
   name: debezium-connect-cluster
@@ -7,15 +7,23 @@ metadata:
     strimzi.io/use-connector-resources: "true"
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  image: debezium/connect:2.5.4.Final
+  image: quay.io/strimzi/kafka:1.0.0-kafka-4.1.0 # Dùng image base của Strimzi
   replicas: 1
   bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-  # Các thuộc tính này BẮT BUỘC phải nằm trực tiếp dưới spec
+  # Strimzi sẽ tự động build image chứa plugin Debezium
+  build:
+    output:
+      type: inline # Dùng 'inline' để Strimzi tự build trong cluster (yêu cầu Cluster Operator có quyền push image)
+    plugins:
+      - name: debezium-postgres-connector
+        artifacts:
+          - type: tgz
+            url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.5.4.Final/debezium-connector-postgres-2.5.4.Final-plugin.tar.gz
+  # Các tham số bắt buộc dưới spec
   groupId: debezium-connect-cluster
   configStorageTopic: debezium-connect-cluster-configs
   offsetStorageTopic: debezium-connect-cluster-offsets
   statusStorageTopic: debezium-connect-cluster-status
-  # Các cấu hình phụ khác mới nằm trong mục config
   config:
     key.converter: org.apache.kafka.connect.json.JsonConverter
     value.converter: org.apache.kafka.connect.json.JsonConverter
