@@ -14,7 +14,6 @@ spec:
   statusStorageTopic: kafka_connect_status
   
   # QUAN TRỌNG: Dùng image chuẩn của Strimzi làm base để có đủ script chạy
-  image: quay.io/strimzi/kafka:latest-kafka-4.1.0
   
   config:
     config.providers: secrets
@@ -22,17 +21,15 @@ spec:
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
+  image: 23122051/my-custom-debezium:latest
+  
+  # CẤU HÌNH QUAN TRỌNG NHẤT ĐỂ TỰ ĐỘNG PULL:
+  # IfNotPresent: Nếu chưa có ở local, nó tự động pull về. Nếu đã có, nó dùng luôn.
+  imagePullPolicy: IfNotPresent
+  
+  template:
+    pod:
+      # Cung cấp quyền cho Minikube đăng nhập vào Docker Hub để pull
+      imagePullSecrets:
+        - name: docker-registry.secret
     
-  {{- if eq .Values.debeziumConnect.buildImage true }}
-  build:
-    output:
-      type: docker
-      # Đây là tên image kết quả sau khi build, KHÔNG ĐƯỢC TRÙNG VỚI spec.image ở trên
-      image: 23122051/my-custom-debezium:latest
-      pushSecret: docker-registry.secret
-    plugins:
-      - name: debezium-postgresql-connector
-        artifacts:
-          - type: tgz
-            url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/2.3.0.Final/debezium-connector-postgres-2.3.0.Final-plugin.tar.gz
-  {{- end }}
