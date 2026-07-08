@@ -28,7 +28,7 @@ spec:
     output:
       type: docker
       # Đây là tên image kết quả sau khi build, KHÔNG ĐƯỢC TRÙNG VỚI spec.image ở trên
-      image: my-custom-debezium:latest
+      image: 23122051/my-custom-debezium:latest
       pushSecret: docker-registry.secret
     plugins:
       - name: debezium-postgresql-connector
