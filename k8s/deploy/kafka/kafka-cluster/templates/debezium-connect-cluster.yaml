@@ -21,7 +21,7 @@ spec:
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
-  image: 23122051/my-custom-debezium:latest
+  image: docker.io/my-custom-debezium:latest
   
   # CẤU HÌNH QUAN TRỌNG NHẤT ĐỂ TỰ ĐỘNG PULL:
   # IfNotPresent: Nếu chưa có ở local, nó tự động pull về. Nếu đã có, nó dùng luôn.
