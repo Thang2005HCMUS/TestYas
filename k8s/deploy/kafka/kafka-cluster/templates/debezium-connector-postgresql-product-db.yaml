@@ -3,7 +3,7 @@ kind: KafkaConnector
 metadata:
   name: debezium-connector-postgresql-product-db
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "3"
   labels:
     strimzi.io/cluster: debezium-connect-cluster
 spec:

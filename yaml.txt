@@ -50,6 +50,29 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: yas-observability
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  namespace: argocd
+spec:
+  destination:
+    namespace: yas-configuration
+    server: https://kubernetes.default.svc
+  source:
+    path: observability-applications
+    repoURL: https://github.com/Thang2005HCMUS/TestYas.git
+    targetRevision: main
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      enabled: true
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: yas-config-app
   finalizers:
     - resources-finalizer.argocd.argoproj.io

@@ -4,6 +4,8 @@ metadata:
   name: kafka-broker-pool
   labels:
     strimzi.io/cluster: kafka-cluster
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   replicas: {{ .Values.kafka.replicas }}
   roles:
