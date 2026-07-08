@@ -1,42 +1,23 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaConnect
 metadata:
   name: debezium-connect-cluster
   namespace: kafka
   annotations:
+    strimzi.io/use-connector-resources: "true"
     argocd.argoproj.io/sync-wave: "1"
-  labels:
-    app: debezium-connect
 spec:
+  image: debezium/connect:2.5.4.Final
   replicas: 1
-  selector:
-    matchLabels:
-      app: debezium-connect
-  template:
-    metadata:
-      labels:
-        app: debezium-connect
-    spec:
-      containers:
-      - name: debezium-connect
-        # Sử dụng image chuẩn của Debezium (Hoặc bản 2.7.3 như project nhỏ của bạn)
-        image: debezium/connect:2.5.4.Final
-        ports:
-        - containerPort: 8083
-          name: api
-        env:
-        # Đường dẫn Bootstrap Service nội bộ của cụm Strimzi hiện tại của bạn
-        - name: BOOTSTRAP_SERVERS
-          value: "kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
-        - name: GROUP_ID
-          value: "debezium-connect-cluster"
-        - name: CONFIG_STORAGE_TOPIC
-          value: "debezium-connect-cluster-configs"
-        - name: OFFSET_STORAGE_TOPIC
-          value: "debezium-connect-cluster-offsets"
-        - name: STATUS_STORAGE_TOPIC
-          value: "debezium-connect-cluster-status"
-        - name: KEY_CONVERTER
-          value: "org.apache.kafka.connect.json.JsonConverter"
-        - name: VALUE_CONVERTER
-          value: "org.apache.kafka.connect.json.JsonConverter"
+  bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+  config:
+    group.id: debezium-connect-cluster
+    config.storage.topic: debezium-connect-cluster-configs
+    offset.storage.topic: debezium-connect-cluster-offsets
+    status.storage.topic: debezium-connect-cluster-status
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    # Bắt buộc thêm các dòng này để Kafka Connect chạy ổn định
+    config.storage.replication.factor: 1
+    offset.storage.replication.factor: 1
+    status.storage.replication.factor: 1
