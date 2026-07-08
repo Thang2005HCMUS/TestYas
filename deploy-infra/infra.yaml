@@ -43,9 +43,9 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: https://charts.bitnami.com/bitnami
+    - repoURL: registry-1.docker.io/bitnamicharts
       chart: redis
-      targetRevision: 8.2.3
+      targetRevision: 27.0.12
       helm:
         valueFiles:
           - $values/k8s/deploy/cluster-config-gitOps.yaml
