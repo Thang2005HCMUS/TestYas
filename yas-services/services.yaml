@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: yas-microservices
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/Thang2005HCMUS/yas
+        targetRevision: HEAD
+        directories:
+          - path: k8s/charts/*
+          # --- LOẠI TRỪ CÁC FILE TEMPLATE GỐC ---
+          - path: k8s/charts/Chart.template.yaml
+            exclude: true
+          - path: k8s/charts/values.template.yaml
+            exclude: true
+          # --- LOẠI TRỪ BACKEND VÀ UI GỐC (CHỈ DÙNG LÀM DEPENDENCY) ---
+          - path: k8s/charts/backend
+            exclude: true
+          - path: k8s/charts/ui
+            exclude: true
+          # --- LOẠI TRỪ CÁC SERVICE KHÔNG NẰM TRONG DANH SÁCH 14 SERVICE ĐƯỢC GIỮ ---
+          - path: k8s/charts/location
+            exclude: true
+          - path: k8s/charts/payment
+            exclude: true
+          - path: k8s/charts/payment-paypal
+            exclude: true
+          - path: k8s/charts/promotion
+            exclude: true
+          - path: k8s/charts/rating
+            exclude: true
+          - path: k8s/charts/recommendation
+            exclude: true
+          - path: k8s/charts/webhook
+            exclude: true
+          - path: k8s/charts/yas-configuration
+            exclude: true
+  template:
+    metadata:
+      name: 'yas-{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/Thang2005HCMUS/yas
+        targetRevision: HEAD
+        path: '{{path}}'
+        helm:
+          valueFiles:
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc # Điền cụ thể theo yêu cầu của bạn
+        namespace: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

@@ -94,3 +94,27 @@ spec:
       enabled: true
 
 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: yas-appset-manager
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Thang2005/TestYas.git
+    targetRevision: main  # Hoặc thay bằng branch chứa file của bạn (ví dụ: master/main)
+    path: yas-services    # Thư mục chứa file ApplicationSet bạn đã lưu
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd     # ApplicationSet bắt buộc phải nằm ở namespace argocd để hoạt động
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+
