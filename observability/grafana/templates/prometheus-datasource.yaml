@@ -7,7 +7,7 @@ spec:
   datasource:
     name: Prometheus
     type: prometheus
-    url: http://prometheus-yas-kube-promet-prometheus.observability.svc.cluster.local:9090
+    url: http://prometheus-prometheus.observability.svc.cluster.local:9090
     access: proxy
     isDefault: true
   instanceSelector:
