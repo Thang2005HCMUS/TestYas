@@ -6,7 +6,7 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: https://github.com/Thang2005HCMUS/yas
+        repoURL: https://github.com/Thang2005HCMUS/TestYas
         revision: main
         directories:
           - path: k8s/charts/*
@@ -40,7 +40,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/Thang2005HCMUS/yas
+        repoURL: https://github.com/Thang2005HCMUS/TestYas
         targetRevision: main
         path: '{{path}}'
         helm:
@@ -54,6 +54,7 @@ spec:
                 # Nếu là backoffice-bff -> backoffice.yas.local.com
                 # Nếu là storefront-bff -> storefront.yas.local.com
                 # Các service còn lại -> api.yas.local.com
+                enable: true
                 host: >-
                   {{- if eq .path.basename "backoffice-bff" }}backoffice.yas.local.com
                   {{- else if eq .path.basename "storefront-bff" }}storefront.yas.local.com
