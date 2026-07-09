@@ -36,14 +36,17 @@ spec:
                   exclude: true
                 - path: k8s/charts/yas-configuration
                   exclude: true
+          # SỬA TẠI ĐÂY: Bỏ khối 'template' gây lỗi, định nghĩa trực tiếp cho các App cụ thể
           - list:
               elements:
                 - appName: backoffice-bff
                   ingressHost: backoffice.yas.local.com
                 - appName: storefront-bff
                   ingressHost: storefront.yas.local.com
+              # Dùng bổ sung để bọc giá trị fallback nếu appName không khớp bff
               template:
-                ingressHost: api.yas.local.com
+                metadata: {}
+                spec: {}
   template:
     metadata:
       name: 'yas-{{path.basename}}'
@@ -56,10 +59,11 @@ spec:
         helm:
           valueFiles:
             - values.yaml
-          # --- SỬ DỤNG PARAMETERS PHẲNG TUYỆT ĐỐI KHÔNG GÂY LỖI INDENT ---
           parameters:
+            # Dùng logic so khớp tên trực tiếp ở tầng template để gán host
             - name: "backend.ingress.host"
-              value: "{{ingressHost}}"
+              value: >-
+                {{if eq .path.basename "backoffice-bff"}}backoffice.yas.local.com{{else if eq .path.basename "storefront-bff"}}storefront.yas.local.com{{else}}api.yas.local.com{{end}}
             - name: "backend.ingress.enabled"
               value: "true"
             - name: "ingress.host"
