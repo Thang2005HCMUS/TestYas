@@ -104,7 +104,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Thang2005/TestYas.git
+    repoURL: https://github.com/Thang2005HCMUS/TestYas.git
     targetRevision: main  # Hoặc thay bằng branch chứa file của bạn (ví dụ: master/main)
     path: yas-services    # Thư mục chứa file ApplicationSet bạn đã lưu
   destination:

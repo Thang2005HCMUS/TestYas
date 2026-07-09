@@ -7,7 +7,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/Thang2005HCMUS/yas
-        targetRevision: HEAD
+        revision: main
         directories:
           - path: k8s/charts/*
           # --- LOẠI TRỪ CÁC FILE TEMPLATE GỐC ---
@@ -44,7 +44,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/Thang2005HCMUS/yas
-        targetRevision: HEAD
+        targetRevision: main
         path: '{{path}}'
         helm:
           valueFiles:
