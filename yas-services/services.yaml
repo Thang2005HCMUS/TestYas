@@ -58,7 +58,7 @@ spec:
                   {{- end }}
                 # THÊM CẤU HÌNH PATH Ở ĐÂY:
                 path: >-
-                  {{- if or (eq .path.basename "backoffice-bff") (eq .path.basename "storefront-bff") }}/
+                  {{- if or (eq .path.basename "backoffice-bff") (eq .path.basename "storefront-bff") }}/api
                   {{- else }}/{{ .path.basename }}
                   {{- end }}
             ingress:
