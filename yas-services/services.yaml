@@ -4,6 +4,7 @@ metadata:
   name: yas-microservices
   namespace: argocd
 spec:
+  goTemplate: true  # BẮT BUỘC: Thêm dòng này để ArgoCD hiểu lệnh điều kiện if/else
   generators:
     - git:
         repoURL: https://github.com/Thang2005HCMUS/TestYas
@@ -36,32 +37,25 @@ spec:
             exclude: true
   template:
     metadata:
-      name: 'yas-{{path.basename}}'
+      name: 'yas-{{ .path.basename }}'  # SỬA: Thêm dấu chấm trước path
     spec:
       project: default
       source:
         repoURL: https://github.com/Thang2005HCMUS/TestYas
         targetRevision: main
-        path: '{{path}}'
+        path: '{{ .path }}'  # SỬA: Thêm dấu chấm trước path
         helm:
           valueFiles:
             - values.yaml
-          
-          # --- ĐÂY LÀ PHẦN THAY THẾ CHO ĐOẠN SCRIPT SET INGRESS HOST ---
           valuesObject:
             backend:
               ingress:
-                # Nếu là backoffice-bff -> backoffice.yas.local.com
-                # Nếu là storefront-bff -> storefront.yas.local.com
-                # Các service còn lại -> api.yas.local.com
-                enable: true
+                enabled: true  # SỬA: Từ 'enable' thành 'enabled'
                 host: >-
                   {{- if eq .path.basename "backoffice-bff" }}backoffice.yas.local.com
                   {{- else if eq .path.basename "storefront-bff" }}storefront.yas.local.com
                   {{- else }}api.yas.local.com
                   {{- end }}
-            
-            # Khấu trừ riêng cho swagger-ui (vì cấu hình nằm ở root ingress, không qua block backend)
             ingress:
               host: api.yas.local.com
       destination:
