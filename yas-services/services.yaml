@@ -56,6 +56,11 @@ spec:
                   {{- else if eq .path.basename "storefront-bff" }}storefront.yas.local.com
                   {{- else }}api.yas.local.com
                   {{- end }}
+                # THÊM CẤU HÌNH PATH Ở ĐÂY:
+                path: >-
+                  {{- if or (eq .path.basename "backoffice-bff") (eq .path.basename "storefront-bff") }}/
+                  {{- else }}/{{ .path.basename }}
+                  {{- end }}
             ingress:
               host: api.yas.local.com
       destination:
