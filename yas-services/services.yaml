@@ -43,14 +43,14 @@ spec:
       source:
         repoURL: https://github.com/Thang2005HCMUS/TestYas
         targetRevision: main
-        path: '{{ .path }}'  # SỬA: Thêm dấu chấm trước path
+        path: '{{ .path.path }}'  # SỬA Ở ĐÂY: Thêm .path để lấy đúng string
         helm:
           valueFiles:
             - values.yaml
           valuesObject:
             backend:
               ingress:
-                enabled: true  # SỬA: Từ 'enable' thành 'enabled'
+                enabled: true
                 host: >-
                   {{- if eq .path.basename "backoffice-bff" }}backoffice.yas.local.com
                   {{- else if eq .path.basename "storefront-bff" }}storefront.yas.local.com
