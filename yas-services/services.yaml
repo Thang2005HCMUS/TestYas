@@ -47,22 +47,15 @@ spec:
           valueFiles:
             - values.yaml
           
-          # --- ĐÂY LÀ PHẦN THAY THẾ CHO ĐOẠN SCRIPT SET INGRESS HOST ---
-          valuesObject:
-            backend:
-              ingress:
-                # Nếu là backoffice-bff -> backoffice.yas.local.com
-                # Nếu là storefront-bff -> storefront.yas.local.com
-                # Các service còn lại -> api.yas.local.com
-                host: >-
-                  {{- if eq .path.basename "backoffice-bff" }}backoffice.yas.local.com
-                  {{- else if eq .path.basename "storefront-bff" }}storefront.yas.local.com
-                  {{- else }}api.yas.local.com
-                  {{- end }}
+          # --- DÙNG PARAMETERS ĐỂ TRUYỀN GIÁ TRỊ PHẲNG, TRÁNH LỖI PARSE CẤU TRÚC KHỐI YQ ---
+          parameters:
+            - name: "backend.ingress.host"
+              value: >-
+                {{if eq .path.basename "backoffice-bff"}}backoffice.yas.local.com{{else if eq .path.basename "storefront-bff"}}storefront.yas.local.com{{else}}api.yas.local.com{{end}}
             
-            # Khấu trừ riêng cho swagger-ui (vì cấu hình nằm ở root ingress, không qua block backend)
-            ingress:
-              host: api.yas.local.com
+            # Khấu trừ riêng cho swagger-ui gốc nếu có
+            - name: "ingress.host"
+              value: "api.yas.local.com"
       destination:
         server: https://kubernetes.default.svc
         namespace: yas
