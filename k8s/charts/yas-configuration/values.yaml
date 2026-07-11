@@ -3,13 +3,12 @@ credentials:
     username: yasadminuser
     password: admin
   elasticsearch:
-    url: elasticsearch-es-http.elasticsearch
     username: yas
     password: LarUmB3A49NTg9YmgW4=
   keycloak:
-    backofficeBffClientSecret: TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF
-    storefrontBffClientSecret: ZrU9I0q2uXBglBnmvyJdkl1lf0ncr8tn
-    customerManagementClientSecret: NKAr3rnjwm9jlakgKpelukZGFaHYqIWE
+    backofficeBffClientSecret: TVacLC0cQ8tiiEKiTVerTb2YvwQ1TRJF #gitleaks:allow
+    storefrontBffClientSecret: ZrU9I0q2uXBglBnmvyJdkl1lf0ncr8tn #gitleaks:allow
+    customerManagementClientSecret: NKAr3rnjwm9jlakgKpelukZGFaHYqIWE #gitleaks:allow
   redis:
     password: redis
   openai:
@@ -263,8 +262,8 @@ customerApplicationConfig:
 searchApplicationConfig:
   elasticsearch:
     url: elasticsearch-es-http.elasticsearch
-    username: yas
-    password: LarUmB3A49NTg9YmgW4=
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
 
 # Payment-paypal application config custom
 paymentPaypalApplicationConfig:
