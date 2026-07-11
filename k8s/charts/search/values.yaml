@@ -11,12 +11,12 @@ backend:
   extraEnvFroms:
     - name: SPRING_ELASTICSEARCH_USERNAME
       valueFrom:
-        secretKeyRef:
+        secretRef:
           name: yas-elasticsearch-credentials-secret
           key: ELASTICSEARCH_USERNAME
     - name: SPRING_ELASTICSEARCH_PASSWORD
       valueFrom:
-        secretKeyRef:
+        secretRef:
           name: yas-elasticsearch-credentials-secret
           key: ELASTICSEARCH_PASSWORD
   extraVolumes:
