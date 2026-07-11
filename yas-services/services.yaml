@@ -47,29 +47,29 @@ spec:
         helm:
           valueFiles:
             - values.yaml
-          valuesObject:
-            backend:
-              ingress:
-                enabled: true
-                annotations:
-                  nginx.ingress.kubernetes.io/use-regex: "true"
-                  # Rewrite target vẫn cần thiết để bỏ tiền tố đi khi vào bên trong service
-                  nginx.ingress.kubernetes.io/rewrite-target: /$3
+          # valuesObject:
+          #   backend:
+          #     ingress:
+          #       enabled: true
+          #       annotations:
+          #         nginx.ingress.kubernetes.io/use-regex: "true"
+          #         # Rewrite target vẫn cần thiết để bỏ tiền tố đi khi vào bên trong service
+          #         nginx.ingress.kubernetes.io/rewrite-target: /$3
                 
-                host: >-
-                  {{- if eq .path.basename "backoffice-bff" }}backoffice.yas.local.com
-                  {{- else if eq .path.basename "storefront-bff" }}storefront.yas.local.com
-                  {{- else }}api.yas.local.com
-                  {{- end }}
+          #       host: >-
+          #         {{- if eq .path.basename "backoffice-bff" }}backoffice.yas.local.com
+          #         {{- else if eq .path.basename "storefront-bff" }}storefront.yas.local.com
+          #         {{- else }}api.yas.local.com
+          #         {{- end }}
                 
-                # SỬA LẠI ĐÂY: Khôi phục logic /api và thêm oauth2, login
-                path: >-
-                  {{- if or (eq .path.basename "backoffice-bff") (eq .path.basename "storefront-bff") }}/(api|oauth2|login)(/|$)(.*)
-                  {{- else }}/{{ .path.basename }}(/|$)(.*)
-                  {{- end }}
-                pathType: ImplementationSpecific
-            ingress:
-              host: api.yas.local.com
+          #       # SỬA LẠI ĐÂY: Khôi phục logic /api và thêm oauth2, login
+          #       path: >-
+          #         {{- if or (eq .path.basename "backoffice-bff") (eq .path.basename "storefront-bff") }}/(api|oauth2|login)(/|$)(.*)
+          #         {{- else }}/{{ .path.basename }}(/|$)(.*)
+          #         {{- end }}
+          #       pathType: ImplementationSpecific
+          #   ingress:
+          #     host: api.yas.local.com
       destination:
         server: https://kubernetes.default.svc
         namespace: yas
