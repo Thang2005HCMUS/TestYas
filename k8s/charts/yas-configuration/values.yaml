@@ -262,7 +262,7 @@ customerApplicationConfig:
 searchApplicationConfig:
   spring:
     elasticsearch:
-      url: elasticsearch-es-http.elasticsearch
+      uris: elasticsearch-es-http.elasticsearch
       username: ${ELASTICSEARCH_USERNAME}
       password: ${ELASTICSEARCH_PASSWORD}
 
