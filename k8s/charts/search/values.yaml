@@ -1,6 +1,6 @@
 backend:
   image:
-    repository: docker.io/2322051/yas-search
+    repository: docker.io/23122051/yas-search
     tag: v1.0.0
 
   nameOverride: search
