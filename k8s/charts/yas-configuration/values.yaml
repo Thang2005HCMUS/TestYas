@@ -3,6 +3,7 @@ credentials:
     username: yasadminuser
     password: admin
   elasticsearch:
+    url: elasticsearch-es-http.elasticsearch
     username: yas
     password: LarUmB3A49NTg9YmgW4=
   keycloak:
@@ -261,7 +262,7 @@ customerApplicationConfig:
 # Search application config custom
 searchApplicationConfig:
   elasticsearch:
-    url: elasticsearch-es-http.elasticsearch
+    url: ${ELASTICSEARCH_URL}
     username: ${ELASTICSEARCH_USERNAME}
     password: ${ELASTICSEARCH_PASSWORD}
 
